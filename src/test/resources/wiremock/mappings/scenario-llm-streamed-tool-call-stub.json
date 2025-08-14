@@ -1,0 +1,18 @@
+{
+  "scenarioName": "LLM Tool Call Then Text Response",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "TextResponse",
+  "request": {
+    "method": "POST",
+    "urlPattern": "/openai/deployments/stubbed-scenario/chat/completions.*"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive"
+    },
+    "bodyFileName": "llm_streamed_tool_call.txt"
+  }
+}
