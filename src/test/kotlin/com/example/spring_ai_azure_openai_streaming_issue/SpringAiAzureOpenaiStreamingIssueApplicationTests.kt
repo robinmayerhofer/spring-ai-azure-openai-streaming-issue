@@ -67,13 +67,13 @@ class SpringAiAzureOpenaiStreamingIssueApplicationTests(
     fun `simple response - order should not be messed up`(repetitionInfo: RepetitionInfo) {
         println("Simple - Repetition ${repetitionInfo.currentRepetition} of ${repetitionInfo.totalRepetitions}")
         if (repetitionInfo.currentRepetition % 50 == 0) {
+            // Reset to prevent piling up too many recorded requests in WireMock
             WireMock.reset()
             System.gc()
         }
 
         val contentStream = chatClient
             .prompt(createPrompt(simpleResponseDeploymentName))
-            .toolCallbacks(weatherTool)
             .stream()
             .content()
 
@@ -87,8 +87,9 @@ class SpringAiAzureOpenaiStreamingIssueApplicationTests(
     @RepeatedTest(20000, failureThreshold = 1)
     fun `tool call response scenario - order should not be messed up`(repetitionInfo: RepetitionInfo) {
         println("TC - Repetition ${repetitionInfo.currentRepetition} of ${repetitionInfo.totalRepetitions}")
-        WireMock.resetAllScenarios()
+        WireMock.resetAllScenarios() // Reset scenario to always do tool call => response
         if (repetitionInfo.currentRepetition % 50 == 0) {
+            // Reset to prevent piling up too many recorded requests in WireMock
             WireMock.reset()
             System.gc()
         }
